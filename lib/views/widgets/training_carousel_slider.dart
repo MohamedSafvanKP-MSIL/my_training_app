@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:my_training_app/views/widgets/carousel_slider_item.dart';
 import 'package:my_training_app/views/widgets/slider_switch_button.dart';
 
 class TrainingCarousel extends StatefulWidget {
@@ -58,20 +58,7 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
             items: widget.trainingImages.map((image) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                ),
+                child: CarouselSliderItem(image: image),
               );
             }).toList(),
           ),
