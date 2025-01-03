@@ -5,6 +5,7 @@ import 'package:my_training_app/presentation/views/widgets/training_item_card.da
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/constants.dart';
+import '../../view_models/search_filter_view_model.dart';
 import '../widgets/training_carousel_slider.dart';
 import 'filter_model_screen.dart';
 
@@ -60,16 +61,26 @@ class _HomeState extends State<Home> {
                       const EdgeInsets.only(left: 16, bottom: 8, right: 16),
                   child: AppBorderButton(
                     onPressed: () {
+                      final searchFilterViewModel =
+                          Provider.of<SearchFilterViewModel>(context,
+                              listen: false);
                       showModalBottomSheet(
                         backgroundColor:
                             Theme.of(context).scaffoldBackgroundColor,
                         context: context,
                         isScrollControlled: true,
                         builder: (context) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                0.75, // 75% of the screen height
-                            child: const FilterModalScreen(),
+                          return ChangeNotifierProvider.value(
+                            value: searchFilterViewModel,
+                            child: Builder(
+                              builder: (context) => SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                child: FilterModalScreen(
+                                  homeViewModel: viewModel,
+                                ),
+                              ),
+                            ),
                           );
                         },
                       );

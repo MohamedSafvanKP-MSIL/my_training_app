@@ -1,41 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:my_training_app/core/logs/app_logs.dart';
+
+import '../../data/models/init_response.dart';
+import 'home_view_model.dart';
 
 class SearchFilterViewModel extends ChangeNotifier {
-  String _selectedFilter = 'Location';
-  List<String> _selectedItems = [];
+  String selectedFilter = 'Location';
+  List<String> selectedItems = [];
+  String searchTerm = '';
 
-  final List<String> locations = ['Location 1', 'Location 2', 'Location 3'];
-  final List<String> trainings = ['Training 1', 'Training 2', 'Training 3'];
-  final List<String> trainers = ['Trainer 1', 'Trainer 2', 'Trainer 3'];
+  List<TrainingItem> getFilteredTrainings(homeViewModel) {
+    List<TrainingItem> filtered = homeViewModel.trainings;
 
-  String get selectedFilter => _selectedFilter;
+    if (selectedFilter == 'Location') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty ||
+              selectedItems.contains(item.location.toLowerCase()))
+          .toList();
+    } else if (selectedFilter == 'Training Name') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty ||
+              selectedItems.contains(item.trainingName.toLowerCase()))
+          .toList();
+    } else if (selectedFilter == 'Trainer Name') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty ||
+              selectedItems.contains(item.traineeName.toLowerCase()))
+          .toList();
+    }
 
-  List<String> get selectedItems => _selectedItems;
+    // Apply search
+    if (searchTerm.isNotEmpty) {
+      filtered = filtered
+          .where((item) => item.trainingName
+              .toLowerCase()
+              .contains(searchTerm.toLowerCase()))
+          .toList();
+    }
 
-  List<String> get availableOptions {
-    switch (_selectedFilter) {
+    return filtered;
+  }
+
+  List<String> getAvailableOptions(HomeViewModel homeViewModel) {
+    switch (selectedFilter) {
       case 'Location':
-        return locations;
+        return homeViewModel.trainings
+            .map((item) => item.location)
+            .toSet()
+            .toList();
       case 'Training Name':
-        return trainings;
+        return homeViewModel.trainings
+            .map((item) => item.trainingName)
+            .toSet()
+            .toList();
       case 'Trainer Name':
-        return trainers;
+        return homeViewModel.trainings
+            .map((item) => item.traineeName)
+            .toSet()
+            .toList();
       default:
         return [];
     }
   }
 
   void updateSelectedFilter(String filter) {
-    _selectedFilter = filter;
+    selectedFilter = filter;
     notifyListeners();
   }
 
-  void toggleSelection(String item) {
-    if (_selectedItems.contains(item)) {
-      _selectedItems.remove(item);
+  void toggleSelectedItem(String item) {
+    if (selectedItems.contains(item)) {
+      selectedItems.remove(item);
     } else {
-      _selectedItems.add(item);
+      selectedItems.add(item);
     }
+    notifyListeners();
+  }
+
+  void updateSearchTerm(String term) {
+    searchTerm = term;
     notifyListeners();
   }
 }

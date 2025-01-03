@@ -6,6 +6,7 @@ import '../../data/repositories/init_repository_impl.dart';
 import '../../domain/repositories/init_repository.dart';
 import '../../domain/usecase/init_usecase.dart';
 import '../../presentation/view_models/home_view_model.dart';
+import '../../presentation/view_models/search_filter_view_model.dart';
 
 
 final sl = GetIt.instance;
@@ -21,4 +22,6 @@ void init() {
 
   // Presentation layer
   sl.registerFactory<HomeViewModel>(() => HomeViewModel(getTrainings: sl()));
+  sl.registerFactory<SearchFilterViewModel>(
+          () => SearchFilterViewModel());
 }
