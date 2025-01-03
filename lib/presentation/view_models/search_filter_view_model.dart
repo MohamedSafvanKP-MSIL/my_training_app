@@ -6,58 +6,60 @@ import 'home_view_model.dart';
 
 class SearchFilterViewModel extends ChangeNotifier {
   String selectedFilter = 'Location';
+  List<TrainingItem> _notFilteredTrainings = [];
+  List<TrainingItem> _searchFilteredTrainings = [];
   List<String> selectedItems = [];
+
+  List<String> selectedPlaceItems = [];
+  List<String> selectedTrainerItems = [];
+  List<String> selectedTraineeItems = [];
+
   String searchTerm = '';
 
-  List<TrainingItem> getFilteredTrainings(homeViewModel) {
-    List<TrainingItem> filtered = homeViewModel.trainings;
+  List<TrainingItem> get notFilteredTrainings => _notFilteredTrainings;
 
-    if (selectedFilter == 'Location') {
-      filtered = filtered
-          .where((item) =>
-              selectedItems.isEmpty ||
-              selectedItems.contains(item.location.toLowerCase()))
-          .toList();
-    } else if (selectedFilter == 'Training Name') {
-      filtered = filtered
-          .where((item) =>
-              selectedItems.isEmpty ||
-              selectedItems.contains(item.trainingName.toLowerCase()))
-          .toList();
-    } else if (selectedFilter == 'Trainer Name') {
-      filtered = filtered
-          .where((item) =>
-              selectedItems.isEmpty ||
-              selectedItems.contains(item.traineeName.toLowerCase()))
-          .toList();
+  List<TrainingItem> get searchFilteredTrainings => _searchFilteredTrainings;
+
+  List<String> getFilteredList() {
+    if (searchTerm.isEmpty) {
+      return getAvailableOptions();
+    } else {
+      return getFilteredTrainings();
     }
+  }
 
-    // Apply search
+  setNotFilteredTrainings(List<TrainingItem> items) {
+    _notFilteredTrainings = items;
+    _searchFilteredTrainings = items;
+    notifyListeners();
+  }
+
+  List<String> getFilteredTrainings() {
+    List<String> filtered = getAvailableOptions();
+
     if (searchTerm.isNotEmpty) {
       filtered = filtered
-          .where((item) => item.trainingName
-              .toLowerCase()
-              .contains(searchTerm.toLowerCase()))
+          .where(
+              (item) => item.toLowerCase().contains(searchTerm.toLowerCase()))
           .toList();
     }
-
     return filtered;
   }
 
-  List<String> getAvailableOptions(HomeViewModel homeViewModel) {
+  List<String> getAvailableOptions() {
     switch (selectedFilter) {
       case 'Location':
-        return homeViewModel.trainings
+        return _notFilteredTrainings
             .map((item) => item.location)
             .toSet()
             .toList();
       case 'Training Name':
-        return homeViewModel.trainings
+        return _notFilteredTrainings
             .map((item) => item.trainingName)
             .toSet()
             .toList();
       case 'Trainer Name':
-        return homeViewModel.trainings
+        return _notFilteredTrainings
             .map((item) => item.traineeName)
             .toSet()
             .toList();
@@ -71,17 +73,43 @@ class SearchFilterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleSelectedItem(String item) {
+  void toggleSelectedItem(String item, HomeViewModel homeViewModel) {
     if (selectedItems.contains(item)) {
       selectedItems.remove(item);
     } else {
       selectedItems.add(item);
     }
+
+    _filterAndUpdate(homeViewModel);
+
     notifyListeners();
   }
 
   void updateSearchTerm(String term) {
     searchTerm = term;
     notifyListeners();
+  }
+
+  void _filterAndUpdate(HomeViewModel homeViewModel) {
+    List<TrainingItem> filtered = _notFilteredTrainings;
+    if (selectedFilter == 'Location') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty || selectedItems.contains(item.location))
+          .toList();
+    } else if (selectedFilter == 'Training Name') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty ||
+              selectedItems.contains(item.trainingName))
+          .toList();
+    } else if (selectedFilter == 'Trainer Name') {
+      filtered = filtered
+          .where((item) =>
+              selectedItems.isEmpty ||
+              selectedItems.contains(item.traineeName.toLowerCase()))
+          .toList();
+    }
+    homeViewModel.setFilteredItems(filtered);
   }
 }

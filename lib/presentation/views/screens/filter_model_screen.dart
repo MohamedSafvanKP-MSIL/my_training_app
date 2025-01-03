@@ -73,24 +73,18 @@ class FilterModalScreen extends StatelessWidget {
                             ),
                           ),
                           Flexible(
-                            // height: 350,
-                            // color: Colors.redAccent,
                             child: ListView.builder(
-                              shrinkWrap: true,
                               itemCount: viewModel
-                                  .getAvailableOptions(homeViewModel)
+                                  .getFilteredList()
                                   .length,
                               itemBuilder: (context, index) {
                                 return CheckboxListTile(
-                                  title: Text(viewModel.getAvailableOptions(
-                                      homeViewModel)[index]),
+                                  title: Text(viewModel.getFilteredList()[index]),
                                   value: viewModel.selectedItems.contains(
-                                      viewModel.getAvailableOptions(
-                                          homeViewModel)[index]),
+                                      viewModel.getFilteredList()[index]),
                                   onChanged: (_) =>
                                       viewModel.toggleSelectedItem(
-                                          viewModel.getAvailableOptions(
-                                              homeViewModel)[index]),
+                                          viewModel.getFilteredList()[index], homeViewModel),
                                 );
                               },
                             ),

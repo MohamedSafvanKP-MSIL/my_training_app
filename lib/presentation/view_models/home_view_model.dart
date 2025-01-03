@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:my_training_app/core/logs/app_logs.dart';
+import 'package:my_training_app/presentation/view_models/search_filter_view_model.dart';
 
 import '../../data/models/init_response.dart';
 import '../../domain/usecase/init_usecase.dart';
@@ -10,12 +12,14 @@ class HomeViewModel with ChangeNotifier {
 
   List<TrainingItem> _highlights = [];
   List<TrainingItem> _trainings = [];
+  List<TrainingItem> _notFilteredTrainings = [];
 
 
   bool _isLoading = false;
   String _errorMessage = "";
 
   List<TrainingItem> get trainings => _trainings;
+  List<TrainingItem> get notFilteredTrainings => _notFilteredTrainings;
   List<TrainingItem> get highlights => _highlights;
 
   bool get isLoading => _isLoading;
@@ -23,13 +27,15 @@ class HomeViewModel with ChangeNotifier {
 
   HomeViewModel({required this.getTrainings});
 
-  Future<void> fetchTrainings() async {
+  Future<void> fetchTrainings(SearchFilterViewModel searchFilterViewModel) async {
     _isLoading = true;
     notifyListeners();
     try {
       _response = await getTrainings(NoParams());
       _highlights = _response.highlights;
       _trainings = _response.trainings;
+      _notFilteredTrainings = _response.trainings;
+      searchFilterViewModel.setNotFilteredTrainings(_response.trainings);
 
       _isLoading = false;
       notifyListeners();
@@ -38,5 +44,11 @@ class HomeViewModel with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  setFilteredItems(List<TrainingItem> filteredItem){
+    AppLogs.printLog('filteredItem: ${filteredItem.length}');
+    _trainings = filteredItem;
+    notifyListeners();
   }
 }

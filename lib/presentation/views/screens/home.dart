@@ -18,13 +18,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late final HomeViewModel viewModel;
+  late final SearchFilterViewModel searchFilterViewModel;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       viewModel = Provider.of<HomeViewModel>(context, listen: false);
-      viewModel.fetchTrainings();
+      searchFilterViewModel =
+          Provider.of<SearchFilterViewModel>(context, listen: false);
+      viewModel.fetchTrainings(searchFilterViewModel);
     });
   }
 
@@ -61,9 +64,6 @@ class _HomeState extends State<Home> {
                       const EdgeInsets.only(left: 16, bottom: 8, right: 16),
                   child: AppBorderButton(
                     onPressed: () {
-                      final searchFilterViewModel =
-                          Provider.of<SearchFilterViewModel>(context,
-                              listen: false);
                       showModalBottomSheet(
                         backgroundColor:
                             Theme.of(context).scaffoldBackgroundColor,
@@ -97,13 +97,17 @@ class _HomeState extends State<Home> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     color: Theme.of(context).canvasColor,
-                    child: ListView.builder(
-                        itemCount: viewModel.trainings.length,
-                        itemBuilder: (context, index) {
-                          return TrainingItemCard(
-                            item: viewModel.trainings[index],
-                          );
-                        }),
+                    child: viewModel.trainings.isEmpty
+                        ? const Center(
+                            child: Text('No filtered Options Available'),
+                          )
+                        : ListView.builder(
+                            itemCount: viewModel.trainings.length,
+                            itemBuilder: (context, index) {
+                              return TrainingItemCard(
+                                item: viewModel.trainings[index],
+                              );
+                            }),
                   ),
                 )
               ],
