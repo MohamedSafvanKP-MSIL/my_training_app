@@ -1,10 +1,11 @@
 # My Trainings App
 
-A Flutter-based mobile application for managing and discovering training programs.
+A Flutter-based mobile application for discovering training programs.
 
 ## Overview
 
-The My Trainings App allows users to browse through a collection of training programs, apply filters to find relevant options, and view detailed information about selected trainings.
+The My Trainings App allows users to browse through a collection of training programs, 
+apply filters to find relevant options, and view detailed information about selected trainings.
 
 ---
 
@@ -16,7 +17,7 @@ The My Trainings App allows users to browse through a collection of training pro
     - Training Name
     - Trainer Name
 - **Scrollable Training List**: View a vertically scrollable list of available trainings.
-- **Detailed View**: Tap on a training to see a full-screen detail view, including date, time, location, and fees.
+- **Detailed View**: Tap on training to see a full-screen detail view, including date, time, location, and fees.
 
 ---
 
@@ -58,15 +59,17 @@ The app utilizes the following Flutter packages:
 
 ---
 
-## Screenshots
+## A recorded video
 
-_Add screenshots of your app's key screens here to showcase its design and functionality._
+
+https://github.com/user-attachments/assets/0bb0380f-5e0e-4b1d-b4e9-a7739562448d
+
 
 ---
 
 ## APK Download
 
-You can download the APK for the app [here](https://your-apk-link.com/download).
+You can download the APK for the app [here](https://appho.st/d/drkc8Ka6).
 
 ---
 
