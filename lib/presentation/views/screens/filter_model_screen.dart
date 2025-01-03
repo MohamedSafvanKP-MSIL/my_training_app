@@ -80,7 +80,7 @@ class FilterModalScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return CheckboxListTile(
                                   title: Text(viewModel.getFilteredList()[index]),
-                                  value: viewModel.selectedItems.contains(
+                                  value: viewModel.getSelectedFilter().contains(
                                       viewModel.getFilteredList()[index]),
                                   onChanged: (_) =>
                                       viewModel.toggleSelectedItem(

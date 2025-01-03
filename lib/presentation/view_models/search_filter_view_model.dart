@@ -8,11 +8,10 @@ class SearchFilterViewModel extends ChangeNotifier {
   String selectedFilter = 'Location';
   List<TrainingItem> _notFilteredTrainings = [];
   List<TrainingItem> _searchFilteredTrainings = [];
-  List<String> selectedItems = [];
 
   List<String> selectedPlaceItems = [];
-  List<String> selectedTrainerItems = [];
-  List<String> selectedTraineeItems = [];
+  List<String> selectedTrainingNameItems = [];
+  List<String> selectedTrainerNameItems = [];
 
   String searchTerm = '';
 
@@ -74,12 +73,31 @@ class SearchFilterViewModel extends ChangeNotifier {
   }
 
   void toggleSelectedItem(String item, HomeViewModel homeViewModel) {
-    if (selectedItems.contains(item)) {
-      selectedItems.remove(item);
-    } else {
-      selectedItems.add(item);
+    AppLogs.printLog('toggleSelectedItem: $selectedFilter');
+    switch (selectedFilter) {
+      case 'Location':
+        if (selectedPlaceItems.contains(item)) {
+          selectedPlaceItems.remove(item);
+        } else {
+          selectedPlaceItems.add(item);
+        }
+        break;
+      case 'Training Name':
+        if (selectedTrainingNameItems.contains(item)) {
+          selectedTrainingNameItems.remove(item);
+        } else {
+          selectedTrainingNameItems.add(item);
+        }
+        break;
+      case 'Trainer Name':
+        if (selectedTrainerNameItems.contains(item)) {
+          selectedTrainerNameItems.remove(item);
+        } else {
+          selectedTrainerNameItems.add(item);
+        }
+        AppLogs.printLog('selectedTrainerNameItems: $selectedTrainerNameItems');
+        break;
     }
-
     _filterAndUpdate(homeViewModel);
 
     notifyListeners();
@@ -90,26 +108,46 @@ class SearchFilterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<String> getSelectedFilter() {
+    switch (selectedFilter) {
+      case 'Location':
+        return selectedPlaceItems;
+      case 'Training Name':
+        return selectedTrainingNameItems;
+      case 'Trainer Name':
+        return selectedTrainerNameItems;
+      default:
+        return [];
+    }
+  }
+
   void _filterAndUpdate(HomeViewModel homeViewModel) {
     List<TrainingItem> filtered = _notFilteredTrainings;
-    if (selectedFilter == 'Location') {
+    if (selectedPlaceItems.isNotEmpty) {
       filtered = filtered
           .where((item) =>
-              selectedItems.isEmpty || selectedItems.contains(item.location))
-          .toList();
-    } else if (selectedFilter == 'Training Name') {
-      filtered = filtered
-          .where((item) =>
-              selectedItems.isEmpty ||
-              selectedItems.contains(item.trainingName))
-          .toList();
-    } else if (selectedFilter == 'Trainer Name') {
-      filtered = filtered
-          .where((item) =>
-              selectedItems.isEmpty ||
-              selectedItems.contains(item.traineeName.toLowerCase()))
+              selectedPlaceItems.isEmpty ||
+              selectedPlaceItems.contains(item.location))
           .toList();
     }
-    homeViewModel.setFilteredItems(filtered);
+    if (selectedTrainingNameItems.isNotEmpty) {
+      filtered = filtered
+          .where((item) =>
+              selectedTrainingNameItems.isEmpty ||
+              selectedTrainingNameItems.contains(item.trainingName))
+          .toList();
+    }
+    if (selectedTrainerNameItems.isNotEmpty) {
+      filtered = filtered
+          .where((item) =>
+              selectedTrainerNameItems.isEmpty ||
+              selectedTrainerNameItems.contains(item.traineeName))
+          .toList();
+    }
+    homeViewModel.setFilteredItems(
+        filtered,
+        (selectedTrainerNameItems.isNotEmpty ||
+            selectedTrainingNameItems.isNotEmpty ||
+            selectedPlaceItems.isNotEmpty));
   }
 }

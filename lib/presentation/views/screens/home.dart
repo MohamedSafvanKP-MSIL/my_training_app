@@ -86,8 +86,12 @@ class _HomeState extends State<Home> {
                       );
                     },
                     preIcon: Icon(
-                      Icons.filter_alt_outlined,
-                      color: Theme.of(context).disabledColor,
+                      viewModel.isFilterApplied
+                          ? Icons.filter_alt
+                          : Icons.filter_alt_outlined,
+                      color: viewModel.isFilterApplied
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).disabledColor,
                       size: 16,
                     ),
                     title: 'Filter',

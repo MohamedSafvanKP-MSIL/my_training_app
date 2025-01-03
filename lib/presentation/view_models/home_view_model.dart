@@ -12,14 +12,13 @@ class HomeViewModel with ChangeNotifier {
 
   List<TrainingItem> _highlights = [];
   List<TrainingItem> _trainings = [];
-  List<TrainingItem> _notFilteredTrainings = [];
+  bool isFilterApplied = false;
 
 
   bool _isLoading = false;
   String _errorMessage = "";
 
   List<TrainingItem> get trainings => _trainings;
-  List<TrainingItem> get notFilteredTrainings => _notFilteredTrainings;
   List<TrainingItem> get highlights => _highlights;
 
   bool get isLoading => _isLoading;
@@ -34,7 +33,6 @@ class HomeViewModel with ChangeNotifier {
       _response = await getTrainings(NoParams());
       _highlights = _response.highlights;
       _trainings = _response.trainings;
-      _notFilteredTrainings = _response.trainings;
       searchFilterViewModel.setNotFilteredTrainings(_response.trainings);
 
       _isLoading = false;
@@ -46,9 +44,10 @@ class HomeViewModel with ChangeNotifier {
     }
   }
 
-  setFilteredItems(List<TrainingItem> filteredItem){
+  setFilteredItems(List<TrainingItem> filteredItem, bool isFilter){
     AppLogs.printLog('filteredItem: ${filteredItem.length}');
     _trainings = filteredItem;
+    isFilterApplied = isFilter;
     notifyListeners();
   }
 }
