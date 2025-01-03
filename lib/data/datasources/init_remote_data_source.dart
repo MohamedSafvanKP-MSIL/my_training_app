@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import '../../core/logs/app_logs.dart';
 import '../../core/network/network_client.dart';
@@ -19,7 +20,9 @@ class InitRemoteDataSource {
       } else {
         throw Exception('Failed to load languages');
       }
-    } catch (e) {
+    } on SocketException{
+      throw Exception('No network Error');
+    }catch (e) {
       throw Exception('Failed to load languages: $e');
     }
   }

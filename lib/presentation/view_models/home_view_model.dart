@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:my_training_app/core/logs/app_logs.dart';
@@ -15,19 +16,21 @@ class HomeViewModel with ChangeNotifier {
   List<TrainingItem> _trainings = [];
   bool isFilterApplied = false;
 
-
   bool _isLoading = false;
   String _errorMessage = "";
 
   List<TrainingItem> get trainings => _trainings;
+
   List<TrainingItem> get highlights => _highlights;
 
   bool get isLoading => _isLoading;
+
   String get errorMessage => _errorMessage;
 
   HomeViewModel({required this.getTrainings});
 
-  Future<void> fetchTrainings(SearchFilterViewModel searchFilterViewModel) async {
+  Future<void> fetchTrainings(
+      SearchFilterViewModel searchFilterViewModel) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -39,13 +42,13 @@ class HomeViewModel with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = "Failed to load trainings";
+      _errorMessage = "$e";
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  setFilteredItems(List<TrainingItem> filteredItem, bool isFilter){
+  setFilteredItems(List<TrainingItem> filteredItem, bool isFilter) {
     AppLogs.printLog('filteredItem: ${filteredItem.length}');
     _trainings = filteredItem;
     isFilterApplied = isFilter;
