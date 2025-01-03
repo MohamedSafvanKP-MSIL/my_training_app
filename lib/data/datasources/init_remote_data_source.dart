@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../../core/logs/app_logs.dart';
 import '../../core/network/network_client.dart';
 import '../../core/utils/api_constants.dart';
 import '../models/init_response.dart';
