@@ -2,7 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatelessWidget {
-  const ProfileWidget({super.key});
+  const ProfileWidget(
+      {super.key,
+      required this.traineeName,
+      required this.imageURL});
+
+  final String traineeName;
+  final String imageURL;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +17,7 @@ class ProfileWidget extends StatelessWidget {
         CircleAvatar(
           radius: 25, // Set the radius of the circle
           backgroundImage: CachedNetworkImageProvider(
-            "https://picsum.photos/id/103/2592/1936",
+            imageURL,
           ),
         ),
         Padding(
@@ -24,7 +30,7 @@ class ProfileWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               Text(
-                'Helen Grible',
+                traineeName,
                 style: TextStyle(
                     color: Theme.of(context).textTheme.displaySmall?.color,
                     fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,

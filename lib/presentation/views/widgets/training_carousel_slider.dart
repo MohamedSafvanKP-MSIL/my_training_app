@@ -3,10 +3,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_training_app/presentation/views/widgets/carousel_slider_item.dart';
 import 'package:my_training_app/presentation/views/widgets/slider_switch_button.dart';
 
-class TrainingCarousel extends StatefulWidget {
-  final List<String> trainingImages;
+import '../../../data/models/init_response.dart';
 
-  const TrainingCarousel({super.key, required this.trainingImages});
+class TrainingCarousel extends StatefulWidget {
+  final List<TrainingItem> highlights;
+
+  const TrainingCarousel({super.key, required this.highlights});
 
   @override
   State<TrainingCarousel> createState() => _TrainingCarouselState();
@@ -16,6 +18,7 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
   final _carouselController = CarouselSliderController();
   final carouselSliderHeight = 300.0;
   final carouselDuration = const Duration(milliseconds: 300);
+  final curve = Curves.easeInOut;
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +55,16 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
           CarouselSlider(
             carouselController: _carouselController,
             options: CarouselOptions(
+              autoPlay: false,
               enlargeCenterPage: true,
               viewportFraction: 0.9,
             ),
-            items: widget.trainingImages.map((image) {
+            items: widget.highlights.map((highlight) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CarouselSliderItem(image: image),
+                child: CarouselSliderItem(
+                  item: highlight,
+                ),
               );
             }).toList(),
           ),
@@ -69,7 +75,7 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
               onTap: () {
                 _carouselController.previousPage(
                   duration: carouselDuration,
-                  curve: Curves.easeInOut,
+                  curve: curve,
                 );
               },
             ),
@@ -79,7 +85,7 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
               child: SliderSwitchButton(onTap: () {
                 _carouselController.nextPage(
                   duration: carouselDuration,
-                  curve: Curves.easeInOut,
+                  curve: curve,
                 );
               })),
         ],

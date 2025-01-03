@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TrainingCarousel(
-                  trainingImages: sampleImages,
+                  highlights: viewModel.highlights,
                 ),
                 Padding(
                   padding:
@@ -87,9 +87,11 @@ class _HomeState extends State<Home> {
                     width: MediaQuery.of(context).size.width,
                     color: Theme.of(context).canvasColor,
                     child: ListView.builder(
-                        itemCount: 10,
+                        itemCount: viewModel.trainings.length,
                         itemBuilder: (context, index) {
-                          return TrainingItemCard();
+                          return TrainingItemCard(
+                            item: viewModel.trainings[index],
+                          );
                         }),
                   ),
                 )

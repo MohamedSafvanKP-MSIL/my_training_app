@@ -3,8 +3,12 @@ import 'package:my_training_app/presentation/views/widgets/AppFilledButton.dart'
 import 'package:my_training_app/presentation/views/widgets/dotted_vertical_line.dart';
 import 'package:my_training_app/presentation/views/widgets/profile_widget.dart';
 
+import '../../../data/models/init_response.dart';
+
 class TrainingItemCard extends StatelessWidget {
-  const TrainingItemCard({super.key});
+  const TrainingItemCard({super.key, required this.item});
+
+  final TrainingItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +30,25 @@ class TrainingItemCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // left part
           Expanded(
             flex: 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Oct 11-13, 2019',
+                  item.date,
                   style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8, bottom: 16),
                   child: Text(
-                    '8:30 am- 12:30 pm',
+                    item.time,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
                 Text(
-                  'Convention Hall, Greater des Moines',
+                  '${item.avenue}\n${item.location}',
                   style: TextStyle(
                       color: Theme.of(context).textTheme.displaySmall?.color,
                       fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
@@ -53,6 +58,8 @@ class TrainingItemCard extends StatelessWidget {
               ],
             ),
           ),
+
+          // dash line
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: VerticalDashedLine(
@@ -64,30 +71,36 @@ class TrainingItemCard extends StatelessWidget {
               width: 1,
             ),
           ),
+
+          // right part
           Expanded(
             flex: 2, // Occupies 2/3 of the card
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Filling fast!',
-                  style: TextStyle(
-                      fontWeight:
-                          Theme.of(context).textTheme.displaySmall?.fontWeight,
-                      color: Theme.of(context).primaryColor,
-                      fontSize:
-                          Theme.of(context).textTheme.bodyMedium?.fontSize),
-                ),
+                if (item.badgeTitle != null)
+                  Text(
+                    item.badgeTitle ?? '',
+                    style: TextStyle(
+                        fontWeight: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.fontWeight,
+                        color: Theme.of(context).primaryColor,
+                        fontSize:
+                            Theme.of(context).textTheme.bodyMedium?.fontSize),
+                  ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    'Safe scrum master (4.6)',
+                    item.trainingName,
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: ProfileWidget(),
+                  child: ProfileWidget(
+                      traineeName: item.traineeName, imageURL: item.imageURL),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

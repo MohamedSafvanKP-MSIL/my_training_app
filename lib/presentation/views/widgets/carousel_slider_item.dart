@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_training_app/presentation/views/widgets/price_widget.dart';
 
-class CarouselSliderItem extends StatelessWidget {
-  const CarouselSliderItem({super.key, required this.image});
+import '../../../data/models/init_response.dart';
 
-  final String image;
+class CarouselSliderItem extends StatelessWidget {
+  const CarouselSliderItem({super.key, required this.item});
+
+  final TrainingItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class CarouselSliderItem extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         CachedNetworkImage(
-          imageUrl: image,
+          imageUrl: item.imageURL,
           fit: BoxFit.cover,
           width: double.infinity,
           placeholder: (context, url) => Center(
@@ -34,7 +36,7 @@ class CarouselSliderItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Safe scrum master',
+                item.trainingName,
                 style: TextStyle(
                     fontSize:
                         Theme.of(context).textTheme.displaySmall?.fontSize,
@@ -44,13 +46,13 @@ class CarouselSliderItem extends StatelessWidget {
                     letterSpacing: 1),
               ),
               Text(
-                'West des moines',
+                item.location,
                 style: TextStyle(
                     fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
                     color: Theme.of(context).scaffoldBackgroundColor,
                     letterSpacing: 1),
               ),
-              PriceWidget(originalPrice: 976, newPrice: 850)
+              PriceWidget(originalPrice: item.traineeFee, newPrice: item.offerPrice)
             ],
           ),
         ),
