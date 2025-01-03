@@ -30,7 +30,7 @@ class TrainingItem {
   final String traineeName;
   final double traineeFee;
   final double offerPrice;
-  final String imageUrl;
+  final String imageURL;
 
   TrainingItem({
     required this.id,
@@ -43,7 +43,7 @@ class TrainingItem {
     required this.traineeName,
     required this.traineeFee,
     required this.offerPrice,
-    required this.imageUrl,
+    required this.imageURL,
   });
 
   factory TrainingItem.fromJson(Map<String, dynamic> json) =>

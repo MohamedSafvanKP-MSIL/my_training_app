@@ -4,7 +4,7 @@ class FilterModalScreen extends StatefulWidget {
   const FilterModalScreen({super.key});
 
   @override
-  _FilterModalScreenState createState() => _FilterModalScreenState();
+  State<FilterModalScreen> createState() => _FilterModalScreenState();
 }
 
 class _FilterModalScreenState extends State<FilterModalScreen> {

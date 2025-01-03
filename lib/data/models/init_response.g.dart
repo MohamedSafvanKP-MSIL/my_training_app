@@ -32,7 +32,7 @@ TrainingItem _$TrainingItemFromJson(Map<String, dynamic> json) => TrainingItem(
       traineeName: json['traineeName'] as String,
       traineeFee: (json['traineeFee'] as num).toDouble(),
       offerPrice: (json['offerPrice'] as num).toDouble(),
-      imageUrl: json['imageUrl'] as String,
+      imageURL: json['imageURL'] as String,
     );
 
 Map<String, dynamic> _$TrainingItemToJson(TrainingItem instance) =>
@@ -47,5 +47,5 @@ Map<String, dynamic> _$TrainingItemToJson(TrainingItem instance) =>
       'traineeName': instance.traineeName,
       'traineeFee': instance.traineeFee,
       'offerPrice': instance.offerPrice,
-      'imageUrl': instance.imageUrl,
+      'imageURL': instance.imageURL,
     };

@@ -4,7 +4,7 @@ import '../datasources/init_remote_data_source.dart';
 import '../models/init_response.dart';
 
 class InitRepositoryImpl implements InitRepository {
-  final InitDataSource remoteDataSource;
+  final InitRemoteDataSource remoteDataSource;
 
   InitRepositoryImpl(this.remoteDataSource);
 
