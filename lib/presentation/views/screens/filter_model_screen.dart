@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/constants.dart';
 import '../../view_models/home_view_model.dart';
 import '../../view_models/search_filter_view_model.dart';
 
@@ -47,13 +48,13 @@ class FilterModalScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _unSelectedWidget(context, 'Sort By', viewModel,
+                          _unSelectedWidget(context,sortBy, viewModel,
                               isFilter: false),
-                          _buildFilterOption(context, 'Location', viewModel),
+                          _buildFilterOption(context, location, viewModel),
                           _buildFilterOption(
-                              context, 'Training Name', viewModel),
+                              context, trainingName, viewModel),
                           _buildFilterOption(
-                              context, 'Trainer Name', viewModel),
+                              context, trainerName, viewModel),
                         ],
                       ),
                     ),

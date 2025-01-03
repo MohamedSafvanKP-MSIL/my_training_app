@@ -6,6 +6,8 @@ import 'package:my_training_app/presentation/view_models/search_filter_view_mode
 import 'package:my_training_app/presentation/views/screens/home.dart';
 import 'package:provider/provider.dart';
 
+import 'core/utils/route_manager.dart';
+
 void main() {
   di.init();
   runApp(const MyApp());
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
+        initialRoute: RouteManager.home,
+        onGenerateRoute: RouteManager.generateRoute,
         home: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context) => di.sl<HomeViewModel>()),

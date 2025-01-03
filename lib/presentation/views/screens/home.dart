@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_training_app/presentation/view_models/home_view_model.dart';
+import 'package:my_training_app/presentation/views/widgets/app_hero.dart';
 import 'package:my_training_app/presentation/views/widgets/icon_button.dart';
 import 'package:my_training_app/presentation/views/widgets/training_item_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/constants.dart';
+import '../../../core/utils/route_manager.dart';
+import '../../../data/models/init_response.dart';
 import '../../view_models/search_filter_view_model.dart';
 import '../widgets/training_carousel_slider.dart';
 import 'filter_model_screen.dart';
@@ -108,8 +111,15 @@ class _HomeState extends State<Home> {
                         : ListView.builder(
                             itemCount: viewModel.trainings.length,
                             itemBuilder: (context, index) {
-                              return TrainingItemCard(
-                                item: viewModel.trainings[index],
+                              return AppHero(
+                                heroId: viewModel.trainings[index].id,
+                                onTap: () {
+                                  viewModel.moveToGroupDetails(
+                                      viewModel.trainings[index], context);
+                                },
+                                child: TrainingItemCard(
+                                  item: viewModel.trainings[index],
+                                ),
                               );
                             }),
                   ),

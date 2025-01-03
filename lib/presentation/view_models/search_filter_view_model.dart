@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_training_app/core/logs/app_logs.dart';
 
+import '../../core/utils/constants.dart';
 import '../../data/models/init_response.dart';
 import 'home_view_model.dart';
 
 class SearchFilterViewModel extends ChangeNotifier {
   // Current selected filter
-  String selectedFilter = 'Location';
+  String selectedFilter = location;
 
   // Original and filtered training data
   List<TrainingItem> _originalTrainings = [];
@@ -14,9 +15,9 @@ class SearchFilterViewModel extends ChangeNotifier {
 
   // Selected filter values
   final Map<String, List<String>> _selectedItems = {
-    'Location': [],
-    'Training Name': [],
-    'Trainer Name': [],
+    location: [],
+    trainingName: [],
+    trainerName: [],
   };
 
   // Search term for filtering
@@ -55,11 +56,11 @@ class SearchFilterViewModel extends ChangeNotifier {
   // Get available options for the current filter
   List<String> getAvailableOptions() {
     switch (selectedFilter) {
-      case 'Location':
+      case location:
         return _getUniqueOptions((item) => item.location);
-      case 'Training Name':
+      case trainingName:
         return _getUniqueOptions((item) => item.trainingName);
-      case 'Trainer Name':
+      case trainerName:
         return _getUniqueOptions((item) => item.traineeName);
       default:
         return [];
@@ -102,11 +103,11 @@ class SearchFilterViewModel extends ChangeNotifier {
       if (selectedValues.isNotEmpty) {
         filtered = filtered.where((item) {
           switch (filter) {
-            case 'Location':
+            case location:
               return selectedValues.contains(item.location);
-            case 'Training Name':
+            case trainingName:
               return selectedValues.contains(item.trainingName);
-            case 'Trainer Name':
+            case trainerName:
               return selectedValues.contains(item.traineeName);
             default:
               return true;

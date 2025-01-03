@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_training_app/core/logs/app_logs.dart';
 import 'package:my_training_app/presentation/view_models/search_filter_view_model.dart';
 
+import '../../core/utils/route_manager.dart';
 import '../../data/models/init_response.dart';
 import '../../domain/usecase/init_usecase.dart';
 
@@ -49,5 +50,9 @@ class HomeViewModel with ChangeNotifier {
     _trainings = filteredItem;
     isFilterApplied = isFilter;
     notifyListeners();
+  }
+
+  moveToGroupDetails(TrainingItem data, BuildContext context) {
+    RouteManager.pushName(context, RouteManager.details, arguments: data);
   }
 }
