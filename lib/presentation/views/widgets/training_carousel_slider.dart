@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:my_training_app/presentation/view_models/home_view_model.dart';
+import 'package:my_training_app/presentation/views/widgets/app_hero.dart';
 import 'package:my_training_app/presentation/views/widgets/carousel_slider_item.dart';
 import 'package:my_training_app/presentation/views/widgets/slider_switch_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/models/init_response.dart';
 
@@ -30,11 +33,15 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
           Column(
             children: [
               Container(
-                color: Theme.of(context).primaryColor,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
                 height: (carouselSliderHeight / 2),
               ),
               Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme
+                    .of(context)
+                    .scaffoldBackgroundColor,
                 height: (carouselSliderHeight / 2),
               ),
             ],
@@ -46,10 +53,20 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
                 'Highlights',
                 style: TextStyle(
                     fontSize:
-                        Theme.of(context).textTheme.displaySmall?.fontSize,
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    Theme
+                        .of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.fontSize,
+                    color: Theme
+                        .of(context)
+                        .scaffoldBackgroundColor,
                     fontWeight:
-                        Theme.of(context).textTheme.displayLarge?.fontWeight,
+                    Theme
+                        .of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.fontWeight,
                     letterSpacing: 1),
               )),
           CarouselSlider(
@@ -62,8 +79,16 @@ class _TrainingCarouselState extends State<TrainingCarousel> {
             items: widget.highlights.map((highlight) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CarouselSliderItem(
-                  item: highlight,
+                child: AppHero(
+                  heroId: highlight.id,
+                  onTap: () {
+                    context
+                        .read<HomeViewModel>()
+                        .moveToGroupDetails(highlight, context);
+                  },
+                  child: CarouselSliderItem(
+                    item: highlight,
+                  ),
                 ),
               );
             }).toList(),

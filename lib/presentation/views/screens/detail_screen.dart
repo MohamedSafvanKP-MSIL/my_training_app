@@ -77,14 +77,14 @@ class DetailsScreen extends StatelessWidget {
                 // Training Name
                 Text(
                   item.trainingName,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
 
                 // Trainer Name
                 Text(
                   'Trainer: ${item.traineeName}',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 16),
 
@@ -125,7 +125,7 @@ class DetailsScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                     },
-                    child: Text('Register Now'),
+                    child: const Text('Register Now'),
                   ),
                 ),
               ],
