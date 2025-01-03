@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_training_app/views/widgets/AppFilledButton.dart';
-import 'package:my_training_app/views/widgets/dotted_vertical_line.dart';
-import 'package:my_training_app/views/widgets/profile_widget.dart';
+import 'package:my_training_app/presentation/views/widgets/AppFilledButton.dart';
+import 'package:my_training_app/presentation/views/widgets/dotted_vertical_line.dart';
+import 'package:my_training_app/presentation/views/widgets/profile_widget.dart';
 
 class TrainingItemCard extends StatelessWidget {
   const TrainingItemCard({super.key});

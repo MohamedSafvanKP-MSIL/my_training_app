@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:my_training_app/views/widgets/carousel_slider_item.dart';
-import 'package:my_training_app/views/widgets/slider_switch_button.dart';
+import 'package:my_training_app/presentation/views/widgets/carousel_slider_item.dart';
+import 'package:my_training_app/presentation/views/widgets/slider_switch_button.dart';
 
 class TrainingCarousel extends StatefulWidget {
   final List<String> trainingImages;

@@ -1,11 +1,12 @@
+
 import 'dart:convert';
 
-import '../core/utils/api_constants.dart';
-import '../core/network/network_client.dart';
+import '../../core/network/network_client.dart';
+import '../../core/utils/api_constants.dart';
 import '../models/init_response.dart';
 
-class InitService {
-  static Future<InitResponse> initRequest() async {
+class InitDataSource {
+   Future<InitResponse> initRequest() async {
     var networkClient = NetworkClient(baseUrl: ApiConstants.baseUrlInit);
 
     try {
@@ -13,7 +14,7 @@ class InitService {
 
       if (response.statusCode == 200) {
         final InitResponse initResponse =
-            InitResponse.fromJson(jsonDecode(response.body));
+        InitResponse.fromJson(jsonDecode(response.body));
         return initResponse;
       } else {
         throw Exception('Failed to load languages');

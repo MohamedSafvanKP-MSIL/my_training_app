@@ -29,7 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   carousel_slider: any
-  provider: any
+  provider: 6.1.2
   cached_network_image: any
   google_fonts: 6.1.0
   http: 1.1.0

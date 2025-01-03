@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:my_training_app/views/widgets/price_widget.dart';
+import 'package:my_training_app/presentation/views/widgets/price_widget.dart';
 
 class CarouselSliderItem extends StatelessWidget {
   const CarouselSliderItem({super.key, required this.image});
