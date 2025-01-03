@@ -5,17 +5,24 @@ import '../../data/models/init_response.dart';
 import 'home_view_model.dart';
 
 class SearchFilterViewModel extends ChangeNotifier {
+  // Current selected filter
   String selectedFilter = 'Location';
-  List<TrainingItem> _notFilteredTrainings = [];
+
+  // Original and filtered training data
+  List<TrainingItem> _originalTrainings = [];
   List<TrainingItem> _searchFilteredTrainings = [];
 
-  List<String> selectedPlaceItems = [];
-  List<String> selectedTrainingNameItems = [];
-  List<String> selectedTrainerNameItems = [];
+  // Selected filter values
+  final Map<String, List<String>> _selectedItems = {
+    'Location': [],
+    'Training Name': [],
+    'Trainer Name': [],
+  };
 
+  // Search term for filtering
   String searchTerm = '';
 
-  List<TrainingItem> get notFilteredTrainings => _notFilteredTrainings;
+  List<TrainingItem> get notFilteredTrainings => _originalTrainings;
 
   List<TrainingItem> get searchFilteredTrainings => _searchFilteredTrainings;
 
@@ -27,8 +34,8 @@ class SearchFilterViewModel extends ChangeNotifier {
     }
   }
 
-  setNotFilteredTrainings(List<TrainingItem> items) {
-    _notFilteredTrainings = items;
+  setTrainings(List<TrainingItem> items) {
+    _originalTrainings = items;
     _searchFilteredTrainings = items;
     notifyListeners();
   }
@@ -45,26 +52,22 @@ class SearchFilterViewModel extends ChangeNotifier {
     return filtered;
   }
 
+  // Get available options for the current filter
   List<String> getAvailableOptions() {
     switch (selectedFilter) {
       case 'Location':
-        return _notFilteredTrainings
-            .map((item) => item.location)
-            .toSet()
-            .toList();
+        return _getUniqueOptions((item) => item.location);
       case 'Training Name':
-        return _notFilteredTrainings
-            .map((item) => item.trainingName)
-            .toSet()
-            .toList();
+        return _getUniqueOptions((item) => item.trainingName);
       case 'Trainer Name':
-        return _notFilteredTrainings
-            .map((item) => item.traineeName)
-            .toSet()
-            .toList();
+        return _getUniqueOptions((item) => item.traineeName);
       default:
         return [];
     }
+  }
+
+  List<String> _getUniqueOptions(String Function(TrainingItem) keyExtractor) {
+    return _originalTrainings.map(keyExtractor).toSet().toList();
   }
 
   void updateSelectedFilter(String filter) {
@@ -73,33 +76,14 @@ class SearchFilterViewModel extends ChangeNotifier {
   }
 
   void toggleSelectedItem(String item, HomeViewModel homeViewModel) {
-    AppLogs.printLog('toggleSelectedItem: $selectedFilter');
-    switch (selectedFilter) {
-      case 'Location':
-        if (selectedPlaceItems.contains(item)) {
-          selectedPlaceItems.remove(item);
-        } else {
-          selectedPlaceItems.add(item);
-        }
-        break;
-      case 'Training Name':
-        if (selectedTrainingNameItems.contains(item)) {
-          selectedTrainingNameItems.remove(item);
-        } else {
-          selectedTrainingNameItems.add(item);
-        }
-        break;
-      case 'Trainer Name':
-        if (selectedTrainerNameItems.contains(item)) {
-          selectedTrainerNameItems.remove(item);
-        } else {
-          selectedTrainerNameItems.add(item);
-        }
-        AppLogs.printLog('selectedTrainerNameItems: $selectedTrainerNameItems');
-        break;
+    final selectedItems = _selectedItems[selectedFilter] ?? [];
+    if (selectedItems.contains(item)) {
+      selectedItems.remove(item);
+    } else {
+      selectedItems.add(item);
     }
     _filterAndUpdate(homeViewModel);
-
+    searchTerm = '';
     notifyListeners();
   }
 
@@ -109,45 +93,28 @@ class SearchFilterViewModel extends ChangeNotifier {
   }
 
   List<String> getSelectedFilter() {
-    switch (selectedFilter) {
-      case 'Location':
-        return selectedPlaceItems;
-      case 'Training Name':
-        return selectedTrainingNameItems;
-      case 'Trainer Name':
-        return selectedTrainerNameItems;
-      default:
-        return [];
-    }
+    return _selectedItems[selectedFilter] ?? [];
   }
 
   void _filterAndUpdate(HomeViewModel homeViewModel) {
-    List<TrainingItem> filtered = _notFilteredTrainings;
-    if (selectedPlaceItems.isNotEmpty) {
-      filtered = filtered
-          .where((item) =>
-              selectedPlaceItems.isEmpty ||
-              selectedPlaceItems.contains(item.location))
-          .toList();
-    }
-    if (selectedTrainingNameItems.isNotEmpty) {
-      filtered = filtered
-          .where((item) =>
-              selectedTrainingNameItems.isEmpty ||
-              selectedTrainingNameItems.contains(item.trainingName))
-          .toList();
-    }
-    if (selectedTrainerNameItems.isNotEmpty) {
-      filtered = filtered
-          .where((item) =>
-              selectedTrainerNameItems.isEmpty ||
-              selectedTrainerNameItems.contains(item.traineeName))
-          .toList();
-    }
+    List<TrainingItem> filtered = _originalTrainings;
+    _selectedItems.forEach((filter, selectedValues) {
+      if (selectedValues.isNotEmpty) {
+        filtered = filtered.where((item) {
+          switch (filter) {
+            case 'Location':
+              return selectedValues.contains(item.location);
+            case 'Training Name':
+              return selectedValues.contains(item.trainingName);
+            case 'Trainer Name':
+              return selectedValues.contains(item.traineeName);
+            default:
+              return true;
+          }
+        }).toList();
+      }
+    });
     homeViewModel.setFilteredItems(
-        filtered,
-        (selectedTrainerNameItems.isNotEmpty ||
-            selectedTrainingNameItems.isNotEmpty ||
-            selectedPlaceItems.isNotEmpty));
+        filtered, _selectedItems.values.any((list) => list.isNotEmpty));
   }
 }

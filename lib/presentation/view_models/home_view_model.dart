@@ -33,7 +33,7 @@ class HomeViewModel with ChangeNotifier {
       _response = await getTrainings(NoParams());
       _highlights = _response.highlights;
       _trainings = _response.trainings;
-      searchFilterViewModel.setNotFilteredTrainings(_response.trainings);
+      searchFilterViewModel.setTrainings(_response.trainings);
 
       _isLoading = false;
       notifyListeners();
